@@ -118,11 +118,11 @@
 </template>
 
 <script>
-import Sticky from "@/components/Sticky";
 import QrCodeImg from "@/components/QrCodeImg";
+import io from "socket.io-client";
 export default {
   name: "Photolist",
-  components: { Sticky, QrCodeImg },
+  components: { QrCodeImg },
   data() {
     return {
       host: process.env.VUE_APP_BASE_API,
@@ -139,6 +139,7 @@ export default {
       pageSize: 10,
       total: 0,
       row: null,
+      socket: null,
     };
   },
   created() {
@@ -147,6 +148,13 @@ export default {
   },
   mounted() {
     this.initList();
+    this.socket = io("ws://localhost:4000");
+  },
+  destroyed() {
+    this.socket.disconnect();
+    this.socket.on("disconnect", function () {
+      console.log("客户端接收服务器发送的消息disconnect");
+    });
   },
   methods: {
     initList(page = 1, pageSize = 10) {
@@ -169,6 +177,7 @@ export default {
             this.page = page;
             this.pageSize = pageSize;
             this.total = total;
+            this.socket.emit("reloadPhotoBackend", 1);
           } else {
             this.$message({
               message: "查询照片失败",

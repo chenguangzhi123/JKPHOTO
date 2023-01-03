@@ -67,7 +67,8 @@
           >
             {{ row.status === "off" ? "上线" : "下线" }}</el-button
           >
-          <el-button size="mini" @click="goDetail(row)">详情</el-button>
+          <el-button size="mini" @click="goDetail(row)">管理</el-button>
+          <el-button size="mini" @click="goPublicDetail(row)">预览</el-button>
           <!-- <el-button
             :disabled="row.status === 'off'? false : true"
             type="primary"
@@ -372,6 +373,21 @@ export default {
           id: row.id,
         },
       });
+    },
+    goPublicDetail(row) {
+      const routeInfo = this.$router.resolve({
+        name: "publicphotolist",
+        params: {
+          id: row.id,
+        },
+      });
+      window.open(routeInfo.href, "_blank");
+      // this.$router.push({
+      //   name: "publicphotolist",
+      //   params: {
+      //     id: row.id,
+      //   },
+      // });
     },
     timeChange(data) {
       let time = data; //将需要格式化的数据传入

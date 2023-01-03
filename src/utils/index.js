@@ -355,3 +355,20 @@ export function removeClass(ele, cls) {
     ele.className = ele.className.replace(reg, ' ')
   }
 }
+
+export const settingSocket = (socket) => {
+  socket.on('reloadPhotoPC', function (data) {
+    console.log('客户端接收服务器发送的消息reloadPhotoPC', data);
+    if (data) {
+      window.location.reload();
+    }
+  });
+
+  socket.on('failAddPhotoPC', function (data) {
+    console.log('客户端接收服务器发送的消息failAddPhotoPC', data);
+    this.$message({
+      message: "添加照片失败",
+      type: "error",
+    });
+  });
+};

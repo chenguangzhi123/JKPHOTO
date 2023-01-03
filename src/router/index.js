@@ -24,6 +24,12 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    name: 'publicphotolist',
+    path: '/publicphotolist/:id',
+    component: () => import('@/views/publicPhotoList'),
+    hidden: true
+  },
+  {
     path: '/auth-redirect',
     component: () => import('@/views/login/auth-redirect'),
     hidden: true
@@ -81,7 +87,7 @@ export const asyncRoutes = [
           roles: ['admin'],
           noCache: true
         }
-      }
+      },
     ]
   },
   // 404 page must be placed at the end !!!
