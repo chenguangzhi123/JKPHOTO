@@ -120,6 +120,7 @@
 <script>
 import QrCodeImg from "@/components/QrCodeImg";
 import io from "socket.io-client";
+import { wsUrl } from "@/constants";
 export default {
   name: "Photolist",
   components: { QrCodeImg },
@@ -148,7 +149,7 @@ export default {
   },
   mounted() {
     this.initList();
-    this.socket = io("ws://localhost:4000");
+    this.socket = io(wsUrl);
   },
   destroyed() {
     this.socket.disconnect();

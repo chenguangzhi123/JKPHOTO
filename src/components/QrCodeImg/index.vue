@@ -35,7 +35,6 @@ export default {
         const href = this.qrContent.replace(".", process.env.VUE_APP_BASE_HOST);
         new QRCode(`${this.id}`, {
           text: href,
-          // text: "http://www.baidu.com",
           width: this.qrWidth,
           height: this.qrHeight,
           colorDark: "#333333",
