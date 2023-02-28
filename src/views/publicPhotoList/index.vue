@@ -1,5 +1,6 @@
 <template>
   <div class="wrap">
+    <!-- <div class="cover"></div> -->
     <div class="row">
       <div v-for="(item, index) in tableData" :key="index" class="col">
         <el-card class="card">
@@ -97,10 +98,23 @@ export default {
 
 <style lang="scss">
 .wrap {
+  position: relative;
   width: 100%;
   height: 100%;
   padding: 20px;
+  background-image: url("../../assets/publicPhotoList/damen.jpg");
+  background-size: 100% 100%;
+  background-attachment: fixed;
 }
+// .cover {
+//   // z-index: 1;
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   background-color: rgba(0, 0, 0, 0.2);
+//   width: 100%;
+//   height: 100%;
+// }
 .row {
   width: 100%;
   display: flex;
@@ -111,6 +125,7 @@ export default {
   width: 22%;
   margin: 20px;
   display: flex;
+  // z-index: 1;
 }
 .card {
   width: 100%;
@@ -123,5 +138,21 @@ export default {
   width: 200px;
   height: 150px;
   margin: 20px auto;
+}
+.el-image-viewer__close {
+  color: #fff;
+}
+
+.el-image-viewer__canvas img {
+  z-index: 4;
+}
+.el-image-viewer__mask {
+  z-index: 3;
+}
+.el-image-viewer__close {
+  z-index: 5;
+}
+.el-image-viewer__actions {
+  z-index: 6;
 }
 </style>
