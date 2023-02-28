@@ -32,8 +32,8 @@ export default {
     qrcode() {
       this.$nextTick(() => {
         document.getElementById(`${this.id}`).innerHTML = "";
-        const qrCodeUrl = process.env.VUE_APP_BASE_HOST;
-        const href = this.qrContent.replace(".", qrCodeUrl);
+        const href = this.qrContent.replace(".", process.env.VUE_APP_BASE_HOST);
+        // const href = process.env.VUE_APP_BASE_HOST + this.qrContent;
         new QRCode(`${this.id}`, {
           text: href,
           width: this.qrWidth,
