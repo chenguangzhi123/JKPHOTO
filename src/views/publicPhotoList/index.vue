@@ -105,7 +105,7 @@ export default {
   height: 100%;
   padding: 20px;
   // background-image: url("../../assets/publicPhotoList/damen.jpg");
-  background-image: url("../../assets/photo/bg.jpg");
+  background-image: url("../../assets/publicPhotoList/tiger.jpg");
   background-size: 100% 100%;
   background-attachment: fixed;
   position: fixed;
