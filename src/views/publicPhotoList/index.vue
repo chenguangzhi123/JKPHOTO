@@ -170,13 +170,13 @@ export default {
 .image {
   width: 100%;
   height: 200px;
-  z-index: 3;
+  // z-index: 3;
 }
 .qrcode {
   width: 200px;
   height: 150px;
   margin: 20px auto;
-  z-index: 3;
+  // z-index: 3;
   position: relative;
 }
 .el-image-viewer__close {
