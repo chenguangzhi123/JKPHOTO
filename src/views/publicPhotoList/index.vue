@@ -184,15 +184,15 @@ export default {
 }
 
 .el-image-viewer__canvas img {
-  z-index: 4;
-}
-.el-image-viewer__mask {
-  z-index: 3;
-}
-.el-image-viewer__close {
   z-index: 5;
 }
-.el-image-viewer__actions {
+.el-image-viewer__mask {
+  z-index: 4;
+}
+.el-image-viewer__close {
   z-index: 6;
+}
+.el-image-viewer__actions {
+  z-index: 7;
 }
 </style>
