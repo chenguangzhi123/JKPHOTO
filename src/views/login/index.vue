@@ -23,7 +23,7 @@
           type="text"
           tabindex="1"
           autocomplete="on"
-        ></el-input>
+        />
       </el-form-item>
       <el-tooltip
         v-model="capsTooltip"
@@ -55,6 +55,20 @@
           </span>
         </el-form-item>
       </el-tooltip>
+      <el-form-item prop="verifyCode">
+        <el-input
+          ref="verifyCode"
+          v-model="loginForm.verifyCode"
+          placeholder="请输入验证码"
+          name="verifyCode"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+      </el-form-item>
+      <div @click="drawCaptcha()">
+        <canvas ref="captchaCanvas" width="200" height="100" />
+      </div>
       <el-button
         :loading="loading"
         type="primary"
@@ -69,7 +83,6 @@
 
 <script>
 /* eslint-disable */
-
 export default {
   name: "Login",
   components: {},
@@ -88,10 +101,18 @@ export default {
         callback();
       }
     };
+    const validateVerify = (rule, value, callback) => {
+      if (value != this.$refs.verifyCode) {
+        callback(new Error("验证码错误"));
+      } else {
+        callback();
+      }
+    };
     return {
       loginForm: {
         username: "admin",
         password: "",
+        verifyCode:""
       },
       loginRules: {
         username: [
@@ -100,6 +121,9 @@ export default {
         password: [
           { required: true, trigger: "blur", validator: validatePassword },
         ],
+        verifyCode: [
+          { required: true, trigger: "blur", validator: validateVerify },
+        ],
       },
       passwordType: "password",
       capsTooltip: false,
@@ -107,6 +131,7 @@ export default {
       showDialog: false,
       redirect: undefined,
       otherQuery: {},
+      verifyCode:""
     };
   },
   watch: {
@@ -127,6 +152,7 @@ export default {
     } else if (this.loginForm.password === "") {
       this.$refs.password.focus();
     }
+    this.drawCaptcha();
   },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
@@ -147,26 +173,29 @@ export default {
       });
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({
-                path: this.redirect || "/",
-                query: this.otherQuery,
+      if(this.loginForm.verifyCode===this.$refs.verifyCode){
+        this.$refs.loginForm.validate((valid) => {
+                if (valid) {
+                  this.loading = true;
+                  this.$store
+                    .dispatch("user/login", this.loginForm)
+                    .then(() => {
+                      this.$router.push({
+                        path: this.redirect || "/",
+                        query: this.otherQuery,
+                      });
+                      this.loading = false;
+                    })
+                    .catch(() => {
+                      this.loading = false;
+                    });
+                } else {
+                  console.log("error submit!!");
+                  return false;
+                }
               });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+      }
+      this.drawCaptcha()
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
@@ -176,11 +205,31 @@ export default {
         return acc;
       }, {});
     },
-  },
+    drawCaptcha() {
+      const canvas = this.$refs.captchaCanvas
+      const ctx = canvas.getContext('2d')
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const captchaText = this.generateCaptchaText()
+      ctx.font = "48px serif"
+      ctx.fillText(captchaText, 60, 75)
+      this.$refs.verifyCode=captchaText
+      // TODO: 添加多种颜色以及弯曲和扭曲效果，增强验证码安全性
+    },
+    generateCaptchaText() {
+      // 生成一个4位字符串
+      const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+      let captchaText = ''
+      for (let i = 0; i < 4; i++) {
+        captchaText += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return captchaText
+    },
+  }
 };
+
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
